@@ -6,7 +6,7 @@
 /*   By: ssong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 13:37:49 by ssong             #+#    #+#             */
-/*   Updated: 2018/01/02 18:43:01 by ssong            ###   ########.fr       */
+/*   Updated: 2018/01/04 15:02:49 by ssong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
-# define BUFF_SIZE 1
+# define BUFF_SIZE 6000
 int		get_next_line(const int fd, char **line);
 typedef struct	s_double
 {

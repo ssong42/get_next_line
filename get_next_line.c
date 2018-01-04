@@ -6,20 +6,25 @@
 /*   By: ssong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/02 14:19:02 by ssong             #+#    #+#             */
-/*   Updated: 2018/01/03 12:45:46 by ssong            ###   ########.fr       */
+/*   Updated: 2018/01/04 15:21:53 by ssong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 t_double	*addnode(t_double *tmp, int fd)
-{
-	tmp = malloc(sizeof(t_double));
-	tmp->str = (char *)malloc(sizeof(char));
-	tmp->str[0] = '\0';
-	tmp->fd = fd;
-	tmp->next = NULL;
-	return (tmp);
+{ 
+	t_double *end;
+
+	end = malloc(sizeof(t_double));
+	end->str = 0;
+	end->fd = fd;
+	end->next = NULL;
+	if (tmp == NULL)
+		return (end);
+	else
+		tmp->next = end;
+	return (end);
 }
 
 t_double	*searchfd(t_double **array, int fd)
@@ -37,9 +42,9 @@ t_double	*searchfd(t_double **array, int fd)
 		if (tmp->next == NULL)
 		{
 			tmp = addnode(tmp, fd);
-			tmp = tmp->next;
 			return (tmp);
-		}	
+		}
+		tmp = tmp->next;
 	}
 	return (tmp);
 }
@@ -85,6 +90,43 @@ int			get_next_line(const int fd, char **line)
 	}
 	return (set_string(&tmp, &line));
 }
+
+/*
+int main(int argc, char **argv)
+{
+	char	*line;
+	int		fd[4096];
+	int		i;
+	int		flag;
+
+	flag = 0;
+	i = 1;
+	if (argc < 2)
+		return (0);
+	line = NULL;
+	while (i < argc)
+	{
+		fd[i - 1] = open(argv[i], O_RDONLY);
+		i++;
+	}
+	while (flag == 0)
+	{
+		flag = 1;
+		i = 0;
+		while (i < argc - 1)
+		{
+			if (get_next_line(fd[i], &line) == 1)
+			{
+				flag = 0;
+				ft_putstr(line);
+				ft_putchar('\n');
+			}
+			i++;
+		}
+	}
+	ft_putstr(line);
+	return (0);
+}*/
 
 /*
 int main(int argc, char **argv)
