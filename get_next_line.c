@@ -6,7 +6,7 @@
 /*   By: ssong <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/02 14:19:02 by ssong             #+#    #+#             */
-/*   Updated: 2018/01/04 15:21:53 by ssong            ###   ########.fr       */
+/*   Updated: 2018/01/04 16:47:36 by ssong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,27 @@ t_double	*searchfd(t_double **array, int fd)
 int			set_string(t_double **array, char ***line)
 {
 	int i;
-	
+	char *temp;
+
 	i = 0;
 	while ((*array)->str[i] != 0 && (*array)->str[i] != '\n')
 			i++;
 	if ((*array)->str[i] == 0)
 	{
-		**line = (*array)->str;
-		if (i > 0)
-			(*array)->str = ft_strdup((*array)->str + i);
-		else if (i == 0)
+		**line = ft_strdup((*array)->str);
+		if (i == 0)
 			return (0);
+		temp = ft_strdup((*array)->str + i);
+		free ((*array)->str);
+		(*array)->str = temp;
 	}
 	else if ((*array)->str[i] == '\n')
 	{
 		(*array)->str[i] = 0;
 		**line = ft_strdup((*array)->str);
-		(*array)->str = ft_strdup((*array)->str + i + 1);
+		temp = ft_strdup((*array)->str + i + 1);
+		free ((*array)->str);
+		(*array)->str = temp;
 	}
 	return (1);
 }
@@ -79,6 +83,7 @@ int			get_next_line(const int fd, char **line)
 	static t_double *array = NULL;
 	char buf[BUFF_SIZE + 1];
 	t_double *tmp;
+	char *temp;
 
 	if (fd < 0 || read(fd, buf, 0) < 0)
 		return (-1);
@@ -86,7 +91,9 @@ int			get_next_line(const int fd, char **line)
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = 0;
-		tmp->str = ft_strjoin(tmp->str, buf);
+		temp = ft_strjoin(tmp->str, buf);
+		free (tmp->str);
+		tmp->str = temp;
 	}
 	return (set_string(&tmp, &line));
 }
